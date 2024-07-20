@@ -1,0 +1,6 @@
+INDEX VERSION 1.134+C:\Users\Lucas\eclipse-workspace\Exercicios\Exercicios PUCRS\.metadata\.plugins\org.eclipse.jdt.core
+2232943556.index
+1820042993.index
+1865797976.index
+4117952331.index
+4062131026.index
