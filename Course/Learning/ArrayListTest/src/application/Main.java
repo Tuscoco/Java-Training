@@ -1,8 +1,6 @@
 package application;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
 
@@ -10,12 +8,18 @@ public class Main {
 		
 		Scanner scan = new Scanner(System.in);
 		
-		List<Integer> array = new ArrayList<>();
+		List<String> array = new ArrayList<>();
 		
-		array.add(10000);
-		array.add(null);
+		array.add("Tusca");
+		array.add("Cinema");
+		array.add("Cavalo");
+		array.add("Guguto");
 		
-		System.out.println(array.get(1));
+		for(String x : array) {
+			
+			System.out.println(x);
+			
+		}
 		
 		scan.close();
 
