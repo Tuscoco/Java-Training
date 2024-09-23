@@ -1,0 +1,4 @@
+model/Pokemon.class
+service/PokemonService.class
+dao/PokemonDao.class
+app/App.class

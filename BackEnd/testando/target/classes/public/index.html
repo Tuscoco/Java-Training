@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário com Banco de Dados</title>
+</head>
+<body>
+
+    <div class="form-container">
+        <h1>Envie os dados do Pokemon</h1>
+        <label for="name">Nome:</label>
+        <input type="text" id="name" name="name" placeholder="Digite o nome do pokemon">
+        
+        <label for="type">Tipo:</label>
+        <input type="text" id="type" name="type" placeholder="Digite o tipo do pokemon">
+        
+        <button onclick="sendData()">Enviar</button>
+
+        <div class="response" id="response"></div>
+    </div>
+
+    <script>
+        function sendData() {
+            const name = document.getElementById('name').value;
+            const type = document.getElementById('type').value;
+            const responseDiv = document.getElementById('response');
+
+            if (name.trim() === '' || type.trim() === '') {
+                responseDiv.innerHTML = 'Por favor, preencha todos os campos.';
+                responseDiv.classList.add('error');
+                return;
+            }
+
+            const data = { name: name, type: type };
+
+            console.log('Dados enviados: ', JSON.stringify(data));
+            
+            fetch('http://localhost:4567/submitdata', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    responseDiv.innerHTML = data.message;
+                    responseDiv.classList.add('success');
+                } else {
+                    responseDiv.innerHTML = data.message;
+                    responseDiv.classList.add('error');
+                }
+            })
+            .catch(error => {
+                responseDiv.innerHTML = 'Erro ao enviar dados. Tente novamente.';
+                responseDiv.classList.add('error');
+            });
+        }
+    </script>
+</body>
+</html>
