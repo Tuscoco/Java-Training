@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário com Banco de Dados</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="form-container">
+        <h1>Envie seus Dados</h1>
+
+        <!--<label for="id">Id:</label>
+        <input type="number" id = "id" name="id" placeholder="Digite seu id">-->
+
+        <label for="name">Nome:</label>
+        <input type="text" id="name" name="name" placeholder="Digite seu nome">
+        
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" placeholder="Digite seu email">
+        
+        <button onclick="sendData()">Enviar</button>
+
+        <div class="response" id="response"></div>
+
+        <button onclick="fetchData()">Ver Dados</button>
+
+        <div id="data-list"></div>
+
+    </div>
+
+    <script>
+        function sendData() {
+            //const id = document.getElementById('id').value;
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const responseDiv = document.getElementById('response');
+
+            if (name.trim() === '' || email.trim() === '') {
+                responseDiv.innerHTML = 'Por favor, preencha todos os campos.';
+                responseDiv.classList.add('error');
+                return;
+            }
+
+            const data = { name: name, email: email };
+
+            console.log('Dados enviados: ', JSON.stringify(data));
+            
+            fetch('http://localhost:4567/submitdata', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    responseDiv.innerHTML = data.message;
+                    responseDiv.classList.add('success');
+                } else {
+                    responseDiv.innerHTML = data.message;
+                    responseDiv.classList.add('error');
+                }
+            })
+            .catch(error => {
+                responseDiv.innerHTML = 'Erro ao enviar dados. Tente novamente.';
+                responseDiv.classList.add('error');
+            });
+        }
+
+        function fetchData() {
+        const dataListDiv = document.getElementById('data-list');
+        dataListDiv.innerHTML = '';  // Limpar o conteúdo antes de exibir os novos dados
+
+        fetch('http://localhost:4567/fetchdata')
+            .then(response => response.json())
+            .then(data => {
+                if (data.length > 0) {
+                    let table = '<table><tr><th>Id</th><th>Nome</th><th>Email</th></tr>';
+                    data.forEach(user => {
+                        table += `<tr><td>${user.id}</td><td>${user.name}</td><td>${user.email}</td></tr>`;
+                    });
+                    table += '</table>';
+                    dataListDiv.innerHTML = table;
+                } else {
+                    dataListDiv.innerHTML = 'Nenhum dado encontrado.';
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao buscar dados:', error);
+                dataListDiv.innerHTML = 'Erro ao buscar dados.';
+            });
+        }
+
+    </script>
+</body>
+</html>
